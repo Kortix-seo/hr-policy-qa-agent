@@ -1,0 +1,118 @@
+# The escalation bar for the HR policy helpdesk agent in this open-source reference project.
+#
+# Each rule is one class of question the agent must never answer on its own, even
+# when the policy library appears to cover it. A rule matches when the question
+# contains any of its `match_any` terms as a whole word or phrase
+# (case-insensitive). The first matching rule decides the escalation reason.
+#
+# This file is data on purpose: the bar belongs in a pull request a person reviews,
+# not inside a prompt nobody can diff.
+version: 1
+
+# What the agent does when no policy section covers the question. Named here so
+# check_escalation.py and the agent's skill agree on the reason string.
+fallback: policy_gap
+
+rules:
+  - id: compensation
+    label: Pay, equity, bonus and offer decisions
+    match_any:
+      - raise
+      - salary
+      - pay
+      - bonus
+      - equity
+      - stock options
+      - compensation
+      - counteroffer
+      - merit increase
+      - pay band
+      - underpaid
+
+  - id: legal
+    label: Legal, regulatory and immigration matters
+    match_any:
+      - lawsuit
+      - lawyer
+      - attorney
+      - legal advice
+      - subpoena
+      - immigration
+      - visa
+      - work permit
+      - discrimination charge
+      - gdpr
+      - data subject request
+      - dsar
+      - union
+      - collective bargaining
+
+  - id: medical_or_accommodation
+    label: Health, medical and accommodation requests
+    match_any:
+      - medical
+      - doctor
+      - diagnosis
+      - sick note
+      - fmla
+      - disability
+      - accommodation
+      - pregnant
+      - pregnancy
+      - mental health
+      - restricted duties
+
+  - id: harassment_and_complaints
+    label: Harassment, discrimination and complaints about a person
+    match_any:
+      - harassment
+      - harassing
+      - hostile
+      - bullying
+      - discriminated
+      - inappropriate comment
+      - comments about my
+      - complaint about a colleague
+      - complaint against
+
+  - id: exception_request
+    label: Requests to waive, bend or override a policy
+    match_any:
+      - exception
+      - waive
+      - waiving
+      - override
+      - bend the
+      - make an allowance
+
+  - id: performance_and_discipline
+    label: Performance, discipline and probation
+    match_any:
+      - performance improvement
+      - pip
+      - disciplinary
+      - written warning
+      - probation
+      - demotion
+      - underperformance
+
+  - id: termination_and_separation
+    label: Termination, layoffs and severance
+    match_any:
+      - layoff
+      - laid off
+      - fired
+      - firing
+      - severance
+      - termination
+      - redundancy
+
+  - id: personal_situation
+    label: An individual's personal circumstances
+    match_any:
+      - my divorce
+      - my custody
+      - my childcare
+      - my partner's illness
+      - my personal situation
+      - my immigration status

@@ -1,0 +1,100 @@
+# Questions the HR inbox actually receives, with the answer this reference agent
+# must give: answer from the named policy section, or escalate for the named reason.
+#
+# check_escalation.py scores escalation_rules.yaml against this file, so a change
+# to the bar that starts answering something it used to escalate fails the check
+# instead of shipping quietly.
+#
+# `expected` is `answer` or `escalate`. An answered question names the policy file
+# that covers it; an escalated one names the rule id (or `policy_gap` when no
+# policy section covers the question).
+questions:
+  - id: q01
+    question: How many vacation days can I carry over into next year?
+    expected: answer
+    policy: policies/pto-and-leave.md
+
+  - id: q02
+    question: How do I request parental leave?
+    expected: answer
+    policy: policies/pto-and-leave.md
+
+  - id: q03
+    question: How many sick days do I have, and when do I need to tell my manager?
+    expected: answer
+    policy: policies/pto-and-leave.md
+
+  - id: q04
+    question: Can I work remotely from another timezone for two weeks?
+    expected: answer
+    policy: policies/remote-and-hybrid-work.md
+
+  - id: q05
+    question: What is the home office stipend and how do I claim it?
+    expected: answer
+    policy: policies/remote-and-hybrid-work.md
+
+  - id: q06
+    question: What is the limit for a conference expense and do I need receipts?
+    expected: answer
+    policy: policies/expenses-and-travel.md
+
+  - id: q07
+    question: How do I book travel for a customer visit?
+    expected: answer
+    policy: policies/expenses-and-travel.md
+
+  - id: q08
+    question: Is there a learning budget I can use for a certification?
+    expected: answer
+    policy: policies/learning-and-equipment.md
+
+  - id: q09
+    question: Which laptop do I get when I join?
+    expected: answer
+    policy: policies/learning-and-equipment.md
+
+  - id: q10
+    question: Can I get a raise to match the offer I just received elsewhere?
+    expected: escalate
+    rule: compensation
+
+  - id: q11
+    question: My doctor put me on restricted duties for six weeks. What are my options?
+    expected: escalate
+    rule: medical_or_accommodation
+
+  - id: q12
+    question: A colleague keeps making comments about my accent in standup. What should I do?
+    expected: escalate
+    rule: harassment_and_complaints
+
+  - id: q13
+    question: Can you waive the receipt requirement for my trip last month?
+    expected: escalate
+    rule: exception_request
+
+  - id: q14
+    question: I got a letter from a lawyer about my visa. Who handles that?
+    expected: escalate
+    rule: legal
+
+  - id: q15
+    question: What happens if someone is put on a performance improvement plan?
+    expected: escalate
+    rule: performance_and_discipline
+
+  - id: q16
+    question: What notice applies if someone is fired for cause?
+    expected: escalate
+    rule: termination_and_separation
+
+  - id: q17
+    question: How many days of study leave do I get?
+    expected: escalate
+    rule: policy_gap
+
+  - id: q18
+    question: How do I get reimbursed for a course I already paid for?
+    expected: answer
+    policy: policies/learning-and-equipment.md

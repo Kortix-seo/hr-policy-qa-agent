@@ -1,0 +1,82 @@
+# yaml-language-server: $schema=https://kortix.com/schema/kortix.v2.schema.json
+#
+# Reference manifest for an open-source HR policy helpdesk agent on Kortix.
+#
+# v2 resolves every omitted grant to none, which is what an agent holding an
+# employee inbox and the company policy record should start from: it can reach
+# nothing here, and every line below is a deliberate addition a reviewer can read
+# in the diff.
+#
+# Validate before you push:  kortix validate --file kortix.yaml
+kortix_version: 2
+
+default_agent: hr-policy-desk
+
+project:
+  name: hr-policy-qa-agent
+  description: An open-source HR policy helpdesk agent that drafts from documented policy and escalates everything that belongs to a person.
+
+# No secrets. Gmail, Notion and Slack access is brokered by connectors, and this
+# manifest grants none of them: add the slug you use to `connectors` and to the
+# agent's `connectors` list, then re-read the policy rules below.
+env:
+  required: []
+  optional: []
+
+# Only the Kortix tools are declared. read, write, edit and bash are the
+# harness's own tools and need no entry here; a name that shadows one is an error.
+tools:
+  memory: kortix:memory
+  web_search: kortix:web_search
+  scrape_webpage: kortix:scrape_webpage
+  show: kortix:show
+
+agents:
+  hr-policy-desk:
+    file: agents/hr-policy-desk.md
+    enabled: true
+    # A checkout of this repository is how the agent reads policies/ at all.
+    workspace:
+      project_repository: true
+    connectors: none
+    secrets: none
+    skills:
+      - hr-policy-triage
+    # Read the repository and the policy library. No push, no merge, no write:
+    # the agent's output is a draft message and an escalation, never a commit.
+    kortix_permissions:
+      - project.read
+      - project.file.read
+      - project.trigger.read
+
+# Every 15 minutes, a fresh session. Nothing carries over between runs, so the
+# inbox's own labels decide what has already been handled.
+triggers:
+  - slug: hr-inbox-sweep
+    type: cron
+    agent: hr-policy-desk
+    session_mode: fresh
+    cron: "0 */15 * * * *"
+    prompt: >-
+      Work the HR inbox. For each unlabelled question: classify it with
+      skills/hr-policy-triage/SKILL.md and escalation_rules.yaml, answer only
+      from the section of policies/ that documents it, and draft the reply
+      quoting that section. Post anything the bar escalates to the HR channel
+      with the question and the reason, and do not attempt an answer. Label every
+      thread you touched so the next run leaves it alone.
+
+# A connector call no rule matches runs if it reads and waits for approval if it
+# writes. The two rules below are the ones an HR agent should never ship without.
+policy:
+  default_mode: risk
+
+policies:
+  - match: "*.send_email"
+    action: require_approval
+  - match: "*.*.delete*"
+    action: block
+
+# A held call waits four hours for a person, so a send drafted at 09:00 is still
+# waiting at lunch rather than expiring overnight.
+approvals:
+  ttl: 4h

@@ -1,0 +1,4 @@
+# check_escalation.py and its tests; this project is open source (MIT).
+# pytest is only needed to run tests/test_check_escalation.py.
+PyYAML>=6.0
+pytest>=8.0

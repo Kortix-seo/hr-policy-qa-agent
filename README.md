@@ -1,6 +1,6 @@
 # An open-source HR policy helpdesk agent for Kortix
 
-An HR inbox collects two very different kinds of question and gives them one queue. One is "how many vacation days carry over", which a policy document already answers word for word. The other is "my doctor put me on restricted duties", which no document should answer at all. This repository is a reference agent that separates those two, built on Kortix, the open-source AI Operating System. It drafts a reply when a policy section covers the question and hands everything else to a person, with the reason and no attempted answer.
+An HR inbox collects two very different kinds of question and gives them one queue. One is "how many vacation days carry over", which a policy document already answers word for word. The other is "my doctor put me on restricted duties", which no document should answer at all. This repository is a reference agent that separates those two, built on Kortix, the open-source CompanyOS. It drafts a reply when a policy section covers the question and hands everything else to a person, with the reason and no attempted answer.
 
 The file worth reading first is `escalation_rules.yaml`. It holds the list of questions the agent must never answer, as eight rules and a fallback, in a file a reviewer can diff and a checker can test.
 
@@ -99,4 +99,4 @@ Fork the repository and point the agent at your own library. Open source. Read i
 
 The longer walkthrough of this agent, with the Gmail, policy-library and Slack wiring, is on the [HR policy QA agent page](https://aiagentsforhrguide.com/hr-policy-qa-agent). The question of who signs off on a rule change, and where approvals sit in an HR workflow, is covered in [governance and approvals](https://aiagentsforhrguide.com/hr-ai-governance-and-approvals). For the wider pattern behind these files, see [the Kortix blog](https://kortix.com/blog/ai-agents-for-hr). The rest of the HR workflow set is written up on the same site: [onboarding and offboarding agents](https://aiagentsforhrguide.com/onboarding-and-offboarding-agents), [hiring agents, screening and scheduling](https://aiagentsforhrguide.com/hiring-agents-screening-and-scheduling), and [how these agents compare with Workday, Oracle and Lattice](https://aiagentsforhrguide.com/ai-agents-for-hr-vs-workday-oracle-lattice).
 
-Kortix is the open-source AI Operating System this agent runs on. [Try Kortix](https://kortix.com) and run this agent against your own policy library.
+Kortix is the open-source CompanyOS this agent runs on. [Try Kortix](https://kortix.com) and run this agent against your own policy library.
